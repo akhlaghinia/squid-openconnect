@@ -1,0 +1,10 @@
+squid-vpn:
+  privileged: true
+  build: .
+  # image: docker-registry:5000/squid-openconnect
+  ports:
+    - "3129:3128"
+  volumes:
+    - /srv/docker/squid/cache:/var/spool/squid
+  restart: always
+  command: bash -c "route add -net 192.168.0.0/16 gw 172.17.0.1 dev eth0 && service squid start && openconnect <SERVER_ADDRESS> -u <USER_NAME> --servercert sha256:d1988b24b9455378e624d87fc91c1696598b5303b43eb0695a51a33f9c20830f --passwd-on-stdin < password.txt"
